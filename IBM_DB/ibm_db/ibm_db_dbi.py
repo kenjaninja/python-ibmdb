@@ -290,6 +290,8 @@ DATETIME = DBAPITypeObject(("TIMESTAMP",))
 
 ROWID = DBAPITypeObject(())
 
+BOOLEAN = DBAPITypeObject(("BOOLEAN"))
+
 # This method is used to determine the type of error that was
 # generated.  It takes an exception instance as an argument, and
 # returns exception object of the appropriate type.
@@ -1093,6 +1095,8 @@ class Cursor(object):
                     column_desc.append(DATETIME)
                 elif ROWID == type:
                     column_desc.append(ROWID)
+                elif BOOLEAN == type:
+                    column_desc.append(BOOLEAN)
 
                 column_desc.append(ibm_db.field_display_size(
                                              self.stmt_handler, column_index))
