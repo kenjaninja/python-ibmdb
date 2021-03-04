@@ -210,7 +210,7 @@ def Binary(string):
     inserting it into a binary type column in the database.
 
     """
-    if not isinstance( string, (types.StringType, types.BufferType) ):
+    if not isinstance( string, (bytes, memoryview) ):
         raise InterfaceError("Binary function expects type string argument.")
     return buffer(string)
 
@@ -290,7 +290,7 @@ DATETIME = DBAPITypeObject(("TIMESTAMP",))
 
 ROWID = DBAPITypeObject(())
 
-BOOLEAN = DBAPITypeObject(("BOOLEAN"))
+BOOLEAN = DBAPITypeObject(("BOOLEAN",))
 
 # This method is used to determine the type of error that was
 # generated.  It takes an exception instance as an argument, and
@@ -1233,14 +1233,14 @@ class Cursor(object):
             self.messages.append(InterfaceError("callproc expects the first argument to be of type String or Unicode."))
             raise self.messages[len(self.messages) - 1]
         if parameters is not None:
-            if not isinstance(parameters, (types.ListType, types.TupleType)):
+            if not isinstance(parameters, (list, tuple)):
                 self.messages.append(InterfaceError("callproc expects the second argument to be of type list or tuple."))
                 raise self.messages[len(self.messages) - 1]
         result = self._callproc_helper(procname, parameters)
         return_value = None
         self.__description = None
         self._all_stmt_handlers = []
-        if isinstance(result, types.TupleType):
+        if isinstance(result, tuple):
             self.stmt_handler = result[0]
             return_value = result[1:]
         else:
@@ -1385,7 +1385,7 @@ class Cursor(object):
             self.messages.append(InterfaceError("execute expects the first argument [%s] to be of type String or Unicode." % operation ))
             raise self.messages[len(self.messages) - 1]
         if parameters is not None:
-            if not isinstance(parameters, (types.ListType, types.TupleType, types.DictType)):
+            if not isinstance(parameters, (license, tuple, dict)):
                 self.messages.append(InterfaceError("execute parameters argument should be sequence."))
                 raise self.messages[len(self.messages) - 1]
         self.__description = None
@@ -1410,7 +1410,7 @@ class Cursor(object):
             self.messages.append(InterfaceError("executemany expects a not None seq_parameters value"))
             raise self.messages[len(self.messages) - 1]
 
-        if not isinstance(seq_parameters, (types.ListType, types.TupleType)):
+        if not isinstance(seq_parameters, (list, tuple)):
             self.messages.append(InterfaceError("executemany expects the second argument to be of type list or tuple of sequence."))
             raise self.messages[len(self.messages) - 1]
 
