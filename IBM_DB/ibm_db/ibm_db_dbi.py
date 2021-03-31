@@ -1385,7 +1385,7 @@ class Cursor(object):
             self.messages.append(InterfaceError("execute expects the first argument [%s] to be of type String or Unicode." % operation ))
             raise self.messages[len(self.messages) - 1]
         if parameters is not None:
-            if not isinstance(parameters, (license, tuple, dict)):
+            if not isinstance(parameters, (list, tuple, dict)):
                 self.messages.append(InterfaceError("execute parameters argument should be sequence."))
                 raise self.messages[len(self.messages) - 1]
         self.__description = None
