@@ -11,30 +11,27 @@
 ## Configuring the environment
 1. Configure environment variables for install/compilation or create a shell profile (i.e. `.profile` file in your home environment) which includes environment variables needed for Python and DB2 for z/OS ODBC (make sure the paths are changed based on your system and DB setting and the variables are configured).
 
-	- NOTE(Default behaviour): IBM_DB_HOME is the HLQ for your DB2 libraries(SDSNMACS, SDSNC.H)
-
-	e.g.
-
 	```
 	# Code page autoconversion i.e. USS will automatically convert between ASCII and EBCDIC where needed.
 	export _BPXK_AUTOCVT='ON'
 	export _CEE_RUNOPTS='FILETAG(AUTOCVT,AUTOTAG) POSIX(ON) XPLINK(ON)
 	export PATH=$HOME/bin:/user/python_install/bin:$PATH
 	export LIBPATH=$HOME/lib:/user/python_install/lib:$PATH
-	export STEPLIB=XXXX.DSN.VC10.SDSNLOAD
-	export STEPLIB=XXXX.DSN.VC10.SDSNLOD2:$STEPLIB
-	export STEPLIB=XXXX.SDSNEXIT:$STEPLIB
+	
+	export DSNAOINI=$HOME/odbc_XXXX.ini	# Db2 ODBC initialization file
+	
+	# Set IBM_DB_HOME to the High Level Qualifier (HLQ) of your Db2 datasets.
+	# For example, if your Db2 datasets are located as XXXX.DSN.VC10.SDSNC.H and XXXX.DSN.VC10.SDSNMACS, 
+	# you need to set IBM_DB_HOME variable to XXXX.DSN.VC10
 	export IBM_DB_HOME=XXXX.DSN.VC10
-	export DSNAOINI=$HOME/odbc_XXXX.ini
+	export STEPLIB=$STEPLIB:$IBM_DB_HOME.SDSNEXIT:$IBM_DB_HOME.SDSNLOAD:$IBM_DB_HOME.SDSNLOD2
 	
-	export DB2_INC=$IBM_DB_HOME.DSNC.H	# TODO: Not sure if needed
-	
-	# In case you have data Set named anything other than SDSNC.H i.e. non default behaviour, 
-	# you need to configure following variable. IGNORE OTHERWISE.
+	# In case you have the SDSNC.H data set named anything other than SDSNC.H, i.e. non default behaviour, 
+	# configure following variable. IGNORE OTHERWISE.
 	# export DB2_INC=$IBM_DB_HOME.XXXX.H
 	
-	# In case you have SDSNMACS data Set named anything other than SDSNMACS i.e. non default behaviour, 
-	# you need to configure following variable. IGNORE OTHERWISE.
+	# In case you have the SDSNMACS data set named anything other than SDSNMACS, i.e. non default behaviour, 
+	# configure following variable. IGNORE OTHERWISE.
 	# export DB2_MACS=$IBM_DB_HOME.XXXX
 	```
 1. To validate python install, run `python3 -V`. Should return `Python 3.8.3` or greater.
@@ -51,7 +48,7 @@
 Now that the Python and ODBC is ready, we need `ibm_db` to connect to DB2.
 
 1. Run `pip3 install ibm_db` to install ibm_db: 
-1. ODBC connects and works with the DB2 for z/OS on the same subsytem or Sysplex using details configured in the `.ini` file . No additional settings or credentials are needed during connection creation in the python script, as shown in the example below:
+1. ODBC connects and works with the DB2 for z/OS on the same subsytem or Sysplex using details configured in the Db2 ODBC `.ini` file . No additional settings or credentials are needed during connection creation in the python script, as shown in the example below:
 	```
 	import ibm_db
 	conn = ibm_db.connect('', '', '')
