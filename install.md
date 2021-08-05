@@ -11,10 +11,10 @@
 ## Configuring the environment
 1. Configure environment variables for install/compilation or create a shell profile (i.e. `.profile` file in your home environment) which includes environment variables needed for Python and DB2 for z/OS ODBC (make sure the paths are changed based on your system and DB setting and the variables are configured).
 
-	```
+	```sh
 	# Code page autoconversion i.e. USS will automatically convert between ASCII and EBCDIC where needed.
 	export _BPXK_AUTOCVT='ON'
-	export _CEE_RUNOPTS='FILETAG(AUTOCVT,AUTOTAG) POSIX(ON) XPLINK(ON)
+	export _CEE_RUNOPTS='FILETAG(AUTOCVT,AUTOTAG) POSIX(ON) XPLINK(ON)'
 	export PATH=$HOME/bin:/user/python_install/bin:$PATH
 	export LIBPATH=$HOME/lib:/user/python_install/lib:$PATH
 	
@@ -36,7 +36,7 @@
 	```
 1. To validate python install, run `python3 -V`. Should return `Python 3.8.3` or greater.
 1. Unless you are a sysprog, you will likely not have authority to install packages globally, so consider creating a python virtual environment:
-	```
+	```sh
 	python3 -m venv $HOME/ibm_python_venv
 	source $HOME/ibm_python_venv/bin/activate
 	```
@@ -49,7 +49,7 @@ Now that the Python and ODBC is ready, we need `ibm_db` to connect to DB2.
 
 1. Run `pip3 install ibm_db` to install ibm_db: 
 1. ODBC connects and works with the DB2 for z/OS on the same subsytem or Sysplex using details configured in the Db2 ODBC `.ini` file . No additional settings or credentials are needed during connection creation in the python script, as shown in the example below:
-	```
+	```python
 	import ibm_db
 	conn = ibm_db.connect('', '', '')
 	```
@@ -57,7 +57,7 @@ Now that the Python and ODBC is ready, we need `ibm_db` to connect to DB2.
 	
 	**test.py**
 
-	```
+	```python
 	from __future__ import print_function
 	import sys
 	import ibm_db
