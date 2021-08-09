@@ -15,10 +15,13 @@
 	# Code page autoconversion i.e. USS will automatically convert between ASCII and EBCDIC where needed.
 	export _BPXK_AUTOCVT='ON'
 	export _CEE_RUNOPTS='FILETAG(AUTOCVT,AUTOTAG) POSIX(ON) XPLINK(ON)'
-	export PATH=$HOME/bin:/user/python_install/bin:$PATH
-	export LIBPATH=$HOME/lib:/user/python_install/lib:$PATH
 	
-	export DSNAOINI=$HOME/odbc_XXXX.ini	# Db2 ODBC initialization file
+	# Python
+	export PYTHON_HOME=<enter-path-to-python-installation>
+	export PATH=$PYTHON_HOME/bin:$PATH
+	export LIBPATH=$PYTHON_HOME/lib:$PATH
+	
+	export DSNAOINI=/path/to/odbc_XXXX.ini	# Db2 ODBC initialization file
 	
 	# Set IBM_DB_HOME to the High Level Qualifier (HLQ) of your Db2 datasets.
 	# For example, if your Db2 datasets are located as XXXX.DSN.VC10.SDSNC.H and XXXX.DSN.VC10.SDSNMACS, 
