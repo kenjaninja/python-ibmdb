@@ -17,7 +17,7 @@
 	export _CEE_RUNOPTS='FILETAG(AUTOCVT,AUTOTAG) POSIX(ON) XPLINK(ON)'
 	
 	# Python
-	export PYTHON_HOME=<enter-path-to-python-installation>
+	export PYTHON_HOME=<path-to-python-installation>
 	export PATH=$PYTHON_HOME/bin:$PATH
 	export LIBPATH=$PYTHON_HOME/lib:$PATH
 	
