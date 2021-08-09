@@ -9,6 +9,45 @@
 		UI72589 (v12)
 
 ## Configuring the environment
+1. Configure an appropriate _Db2 ODBC initialization file_ that can be read at application time. For compatibility with ibm_db, the following properties must be set:
+
+    In COMMON section:
+
+    ```
+    MULTICONTEXT=2
+    CURRENTAPPENSCH=ASCII
+    FLOAT=IEEE
+    ```
+
+    In SUBSYSTEM section:
+
+    ```
+    MVSATTACHTYPE=RRSAF
+    ```
+
+    Here is a sample of a complete initialization file:
+
+    ```
+    ; This is a comment line...
+    ; Example COMMON stanza
+    [COMMON]
+    MVSDEFAULTSSID=VC1A
+    CONNECTTYPE=1
+    MULTICONTEXT=2
+    CURRENTAPPENSCH=ASCII
+    FLOAT=IEEE
+    ; Example SUBSYSTEM stanza for VC1A subsystem
+    [VC1A]
+    MVSATTACHTYPE=RRSAF
+    PLANNAME=DSNACLI
+    ; Example DATA SOURCE stanza for STLEC1 data source
+    [STLEC1]
+    AUTOCOMMIT=1
+    CURSORHOLD=1
+    ```
+
+    Reference [Db2 ODBC initialization file](https://www.ibm.com/docs/en/db2-for-zos/12?topic=applications-db2-odbc-initialization-file) in IBM Docs for more details.
+
 1. Configure environment variables for install/compilation or create a shell profile (i.e. `.profile` file in your home environment) which includes environment variables needed for Python and DB2 for z/OS ODBC (make sure the paths are changed based on your system and DB setting and the variables are configured).
 
 	```sh
@@ -17,7 +56,7 @@
 	export _CEE_RUNOPTS='FILETAG(AUTOCVT,AUTOTAG) POSIX(ON) XPLINK(ON)'
 	
 	# Python
-	export PYTHON_HOME=<path-to-python-installation>
+	export PYTHON_HOME=/path/to/python/install
 	export PATH=$PYTHON_HOME/bin:$PATH
 	export LIBPATH=$PYTHON_HOME/lib:$PATH
 	
@@ -25,7 +64,7 @@
 	
 	# Set IBM_DB_HOME to the High Level Qualifier (HLQ) of your Db2 datasets.
 	# For example, if your Db2 datasets are located as XXXX.DSN.VC10.SDSNC.H and XXXX.DSN.VC10.SDSNMACS, 
-	# you need to set IBM_DB_HOME variable to XXXX.DSN.VC10
+	# you need to set the IBM_DB_HOME variable to XXXX.DSN.VC10
 	export IBM_DB_HOME=XXXX.DSN.VC10
 	export STEPLIB=$STEPLIB:$IBM_DB_HOME.SDSNEXIT:$IBM_DB_HOME.SDSNLOAD:$IBM_DB_HOME.SDSNLOD2
 	
@@ -37,7 +76,7 @@
 	# configure following variable. IGNORE OTHERWISE.
 	# export DB2_MACS=$IBM_DB_HOME.XXXX
 	```
-1. To validate python install, run `python3 -V`. Should return `Python 3.8.3` or greater.
+1. To validate your python install, run `python3 -V`. Should return `Python 3.8.3` or greater.
 1. Unless you are a sysprog, you will likely not have authority to install packages globally, so consider creating a python virtual environment:
 	```sh
 	python3 -m venv $HOME/ibm_python_venv
@@ -80,3 +119,5 @@ Now that the Python and ODBC is ready, we need `ibm_db` to connect to DB2.
 		print("No connection:", ibm_db.conn_errormsg())
 	print('ODBC Test end')
 	```	
+
+## Configuring a Db2 ODBC initialization file
