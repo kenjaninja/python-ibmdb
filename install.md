@@ -13,7 +13,7 @@
 
     In COMMON section:
 
-    ```
+    ```ini
     MULTICONTEXT=2
     CURRENTAPPENSCH=ASCII
     FLOAT=IEEE
@@ -21,13 +21,13 @@
 
     In SUBSYSTEM section:
 
-    ```
+    ```ini
     MVSATTACHTYPE=RRSAF
     ```
 
     Here is a sample of a complete initialization file:
 
-    ```
+    ```ini
     ; This is a comment line...
     ; Example COMMON stanza
     [COMMON]
@@ -120,4 +120,36 @@ Now that the Python and ODBC is ready, we need `ibm_db` to connect to DB2.
 	print('ODBC Test end')
 	```	
 
-## Configuring a Db2 ODBC initialization file
+# Common issues
+## Missing header files
+```
+Using legacy 'setup.py install' for ibm-db, since package 'wheel' is not installed.
+Installing collected packages: ibm-db
+    Running setup.py install for ibm-db ... error
+...
+    WARNING CCN3296 ./ibm_db.c:27    #include file <Python.h> not found.
+    WARNING CCN3296 ./ibm_db.c:28    #include file <datetime.h> not found.
+    WARNING CCN3296 ./ibm_db.h:16    #include file <Python.h> not found.
+    WARNING CCN3296 ./ibm_db.h:17    #include file <structmember.h> not found.
+...
+    ERROR CCN3309 ./ibm_db.h:229   The offsetof macro cannot be used with an incomplete struct or union.
+    ERROR CCN3277 ./ibm_db.h:229   Syntax error: possible missing ';' or ','?
+    CCN0793(I) Compilation failed for file ./ibm_db.c.  Object file not created.
+    error: command '/bin/xlc' failed with exit code 12
+```
+Your python is not a `python-dev` installation, which means it does not include necessary C header files used to install `ibm_db`. For Python 3.8, these header files usually reside in the `include/python3.8` of a `python-dev` installation directory.
+
+### Solution
+On z/OS, your python directory may have a `python-dev` installation along with your regular python installation. You can search for a relevant header file to find this directory.
+```sh
+ls /usr/lpp/python38/pyz/include/		# No header files in include directory
+# 
+
+find /usr/lpp/python38/ -name "Python.h"	# Find Python header file
+# /usr/lpp/python38/usr/lpp/IBM/cyp/v3r8/pyz/include/python3.8/Python.h
+
+# Use newly found python-dev install and retry install
+export PYTHON_HOME=/usr/lpp/python38/usr/lpp/IBM/cyp/v3r8/pyz
+export PATH=$PYTHON_HOME/bin:$PATH
+export LIBPATH=$PYTHON_HOME/lib:$PATH
+```
