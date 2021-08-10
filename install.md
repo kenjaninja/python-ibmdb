@@ -111,7 +111,7 @@ Now that the Python and ODBC is ready, we need `ibm_db` to connect to DB2.
 		if stmt:
 			while (ibm_db.fetch_row(stmt)):
 				date = ibm_db.result(stmt, 0)
-				print("Current date is :", date)
+				print("Current date is:", date)
 		else:
 			print(ibm_db.stmt_errormsg())
 		ibm_db.close(conn)
