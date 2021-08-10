@@ -154,7 +154,7 @@ export PATH=$PYTHON_HOME/bin:$PATH
 export LIBPATH=$PYTHON_HOME/lib:$PATH
 ```
 
-## ERROR: No .egg-info directory found in xxxx
+## ERROR: No .egg-info directory found in /tmp/...
 `IBM_DB_HOME` environment variable is not set
 ### Solution
 Set `IBM_DB_HOME` to the High Level Qualifier (HLQ) of your Db2 datasets (refer to environment variable configuration step in **Configuring the environment** section)
