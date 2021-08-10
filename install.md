@@ -104,7 +104,7 @@ Now that the Python and ODBC is ready, we need `ibm_db` to connect to DB2.
 	import sys
 	import ibm_db
 
-	print('ODBC Test start')
+	print('ODBC test start')
 	conn = ibm_db.connect('', '', '')
 	if conn:
 		stmt = ibm_db.exec_immediate(conn, "SELECT CURRENT DATE FROM SYSIBM.SYSDUMMY1")
@@ -117,7 +117,7 @@ Now that the Python and ODBC is ready, we need `ibm_db` to connect to DB2.
 		ibm_db.close(conn)
 	else:
 		print("No connection:", ibm_db.conn_errormsg())
-	print('ODBC Test end')
+	print('ODBC test end')
 	```	
 
 # Common issues
